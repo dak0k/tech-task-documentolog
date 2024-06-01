@@ -9,34 +9,19 @@ $comments = [
     ['id' => 7, 'parent_id' => 0, 'comment' => 'Comment 7'],
 ];
 
-function createTree($comments, $parentId = 0) {
-    $branch = [];
-    foreach ($comments as $comment) {
+function foo($arr, $parentId = 0, $lvl = 0)
+{
+    $prepend = str_repeat(' ', $lvl * 4);
+    echo $prepend, '<ul>', PHP_EOL;
+    foreach ($arr as $comment) {
         if ($comment['parent_id'] == $parentId) {
-            $children = createTree($comments, $comment['id']);
-            if ($children) {
-                $comment['children'] = $children;
-            }
-            $branch[] = $comment;
+            echo $prepend, '    <li>', htmlentities($comment['comment']), PHP_EOL;
+            foo($arr, $comment['id'], $lvl + 1);
+            echo $prepend, '    </li>', PHP_EOL;
         }
     }
-    return $branch;
+    echo $prepend, '</ul>', PHP_EOL;
 }
 
-function generateTree($comments) {
-    $html = '<ul>';
-    foreach ($comments as $comment) {
-        $html .= '<li>' . htmlspecialchars($comment['comment']);
-        if (!empty($comment['children'])) {
-            $html .= generateTree($comment['children']);
-        }
-        $html .= '</li>';
-    }
-    $html .= '</ul>';
-    return $html;
-}
-
-$commentTree = createTree($comments);
-echo generateTree($commentTree);
-
+foo($comments);
 ?>
