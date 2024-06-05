@@ -9,19 +9,19 @@ $comments = [
     ['id' => 7, 'parent_id' => 0, 'comment' => 'Comment 7'],
 ];
 
-function foo($arr, $parentId = 0, $lvl = 0)
+function generateComment($arr, $parentId = 0, $lvl = 0)
 {
     $prepend = str_repeat(' ', $lvl * 4);
-    echo $prepend, '<ul>', PHP_EOL;
+    echo $prepend, '<ul>';
     foreach ($arr as $comment) {
         if ($comment['parent_id'] == $parentId) {
-            echo $prepend, '    <li>', htmlentities($comment['comment']), PHP_EOL;
-            foo($arr, $comment['id'], $lvl + 1);
-            echo $prepend, '    </li>', PHP_EOL;
+            echo $prepend, '    <li>', htmlentities($comment['comment']);
+            generateComment($arr, $comment['id'], $lvl + 1);
+            echo $prepend, '    </li>';
         }
     }
-    echo $prepend, '</ul>', PHP_EOL;
+    echo $prepend, '</ul>';
 }
 
-foo($comments);
+generateComment($comments);
 ?>
